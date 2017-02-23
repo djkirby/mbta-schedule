@@ -17,7 +17,7 @@ app.post('/webhook', function (req, res) {
   var params = req.body.result.parameters;
   var city = params['geo-city'];
   var direction;
-  if (city === 'Boston') {
+  if (city === 'South Station') {
     direction = params.direction === 'leaving' ? 0 : 1;
   } else {
     direction = params.direction === 'leaving' ? 1 : 0;
