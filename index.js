@@ -9,7 +9,8 @@ app.set('port', (process.env.PORT || 5000));
 app.post('/webhook', function (req, res) {
   /* const myHeaders = new Headers(); */
   /* myHeaders.append("X-AUTH", process.env.xauth); */
-  console.log(JSON.stringify(req));
+
+  console.log(JSON.stringify(req.body))
 
   fetch(`http://realtime.mbta.com/developer/api/v2/schedulebystop?api_key=${process.env.mbtakey}&stop=South%20Attleboro&direction=0&route=CR-Providence&max_time=1440`, { method: 'GET' }).then(resp => {
     return resp.json();
