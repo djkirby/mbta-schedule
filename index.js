@@ -14,9 +14,9 @@ app.post('/webhook', function (req, res) {
   /* const myHeaders = new Headers(); */
   /* myHeaders.append("X-AUTH", process.env.xauth); */
 
-  const params = req.body.result.parameters;
-  const city = params['geo-city'];
-  let direction;
+  var params = req.body.result.parameters;
+  var city = params['geo-city'];
+  var direction;
   if (city === 'Boston') {
     direction = params.direction === 'leaving' ? 0 : 1;
   } else {
