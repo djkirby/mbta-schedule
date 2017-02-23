@@ -28,6 +28,7 @@ app.post('/webhook', function (req, res) {
   }).then(data => {
     const times = data.mode[0].route[0].direction[0].trip.map(trip => {
       const name = trip.trip_name;
+      console.log(name)
       const time = /\((.+) from.*\)/i.exec(name)[1];
       return time;
     })
