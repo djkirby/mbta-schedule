@@ -15,7 +15,7 @@ app.post('/webhook', function (req, res) {
   /* myHeaders.append("X-AUTH", process.env.xauth); */
 
   var params = req.body.result.parameters;
-  var city = params['geo-city'];
+  var city = params['stop'];
   var direction = params['direction'] === 'inbound' ? 1 : 0;
 
   fetch(`http://realtime.mbta.com/developer/api/v2/schedulebystop?api_key=${process.env.mbtakey}&stop=${encodeURIComponent(city)}&direction=${direction}&route=CR-Providence&max_time=1440`, { method: 'GET' }).then(resp => {
