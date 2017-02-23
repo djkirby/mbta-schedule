@@ -2,21 +2,32 @@ var express = require('express');
 var app = express();
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
+var moment = require('moment');
 
 app.set('port', (process.env.PORT || 5000));
 
 app.post('/webhook', function (req, res) {
   /* const myHeaders = new Headers(); */
   /* myHeaders.append("X-AUTH", process.env.xauth); */
-  res.send({
-    "speech": "From South Attleboro you can leave at 4:29, 5:55, or 6:35. Later you can leave South Station at 9:45, 10:55, or 11:55.",
-    "displayText": "From South Attleboro you can leave at 4:29, 5:55, or 6:35. Later you can leave South Station at 9:45, 10:55, or 11:55.",
-    "data": {},
-    "contextOut": [],
-    "source": "MBTA"
+
+  fetch(`http://realtime.mbta.com/developer/api/v2/schedulebystop?api_key=${process.env.mbtakey}&stop=South%20Attleboro&direction=0&route=CR-Providence&max_time=1440`, { method: 'GET' }).then(resp => {
+    return resp.json();
+  }).then(data => {
+    const times = data.mode[0].route[0].direction[0].trip.map(trip => {
+      const name = trip.trip_name;
+      const time = /\((.+) from.*\)/i.exec(name)[1];
+      return time;
+    })
+    res.send({
+      "speech": `From South Attleboro you can leave at ${times.join(',')}`,
+      "displayText": `From South Attleboro you can leave at ${times.join(',')}`,
+      "data": {},
+      "contextOut": [],
+      "source": "MBTA"
+    });
   });
 })
 
-  app.listen(app.get('port'), function() {
+app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
