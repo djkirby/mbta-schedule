@@ -3,6 +3,10 @@ var app = express();
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 var moment = require('moment');
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.json()); // for parsing application/json
+
 
 app.set('port', (process.env.PORT || 5000));
 
