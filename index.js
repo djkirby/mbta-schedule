@@ -16,12 +16,7 @@ app.post('/webhook', function (req, res) {
 
   var params = req.body.result.parameters;
   var city = params['geo-city'];
-  var direction;
-  if (city === 'South Station') {
-    direction = params.direction === 'leaving' ? 0 : 1;
-  } else {
-    direction = params.direction === 'leaving' ? 1 : 0;
-  }
+  var direction = params['direction'] === 'inbound' ? 1 : 0;
 
   fetch(`http://realtime.mbta.com/developer/api/v2/schedulebystop?api_key=${process.env.mbtakey}&stop=${encodeURIComponent(city)}&direction=${direction}&route=CR-Providence&max_time=1440`, { method: 'GET' }).then(resp => {
     return resp.json();
