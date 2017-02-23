@@ -14,9 +14,16 @@ app.post('/webhook', function (req, res) {
   /* const myHeaders = new Headers(); */
   /* myHeaders.append("X-AUTH", process.env.xauth); */
 
-  console.log(JSON.stringify(req.body))
+  const params = req.body.result.parameters;
+  const city = params['geo-city'];
+  let direction;
+  if (city === 'Boston') {
+    direction = params.direction === 'leaving' ? 0 : 1;
+  } else {
+    direction = parms.direction === 'leaving' ? 1 : 0;
+  }
 
-  fetch(`http://realtime.mbta.com/developer/api/v2/schedulebystop?api_key=${process.env.mbtakey}&stop=South%20Attleboro&direction=0&route=CR-Providence&max_time=1440`, { method: 'GET' }).then(resp => {
+  fetch(`http://realtime.mbta.com/developer/api/v2/schedulebystop?api_key=${process.env.mbtakey}&stop=${encodeURIComponent(city)}&direction=${direction}&route=CR-Providence&max_time=1440`, { method: 'GET' }).then(resp => {
     return resp.json();
   }).then(data => {
     const times = data.mode[0].route[0].direction[0].trip.map(trip => {
