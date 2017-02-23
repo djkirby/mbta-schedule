@@ -32,8 +32,8 @@ app.post('/webhook', function (req, res) {
       return time;
     })
     res.send({
-      "speech": `From South Attleboro you can leave at ${times.join(',')}`,
-      "displayText": `From South Attleboro you can leave at ${times.join(',')}`,
+      "speech": `${times.join(',')}`,
+      "displayText": `${times.join(',')}`,
       "data": {},
       "contextOut": [],
       "source": "MBTA"
